@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Flashcard Học Từ</title>
+
+<style>
+
+body{
+font-family: Arial;
+text-align:center;
+background:linear-gradient(135deg,#dff6ff,#e8ffe8);
+overflow:hidden;
+}
+
+.container{
+width:350px;
+margin:auto;
+margin-top:60px;
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+position:relative;
+z-index:2;
+}
+
+input{
+width:90%;
+padding:10px;
+margin:6px;
+border-radius:8px;
+border:1px solid #ccc;
+}
+
+button{
+padding:8px 15px;
+margin:5px;
+border:none;
+border-radius:8px;
+background:#4CAF50;
+color:white;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+background:#3a9e41;
+}
+
+.card{
+margin-top:20px;
+height:150px;
+background:#fff8dc;
+border-radius:12px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px;
+box-shadow:0 0 10px rgba(0,0,0,0.2);
+cursor:pointer;
+}
+
+/* hiệu ứng hoa lá */
+
+.leaf{
+position:absolute;
+font-size:22px;
+animation:fall linear infinite;
+}
+
+@keyframes fall{
+
+0%{
+transform:translateY(-10vh) rotate(0deg);
+opacity:1;
+}
+
+100%{
+transform:translateY(110vh) rotate(360deg);
+opacity:0.7;
+}
+
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h2>🌸 Flashcard Học Từ 🌿</h2>
+
+<input id="word" placeholder="Nhập từ vựng">
+<input id="meaning" placeholder="Nhập nghĩa">
+
+<br>
+
+<button onclick="addCard()">Thêm thẻ</button>
+
+<div class="card" onclick="flipCard()" id="flashcard">
+Chưa có thẻ
+</div>
+
+<br>
+
+<button onclick="prevCard()">Prev</button>
+<button onclick="nextCard()">Next</button>
+
+</div>
+
+<script>
+
+let cards = []
+let current = 0
+let flipped = false
+
+function addCard(){
+
+let word = document.getElementById("word").value
+let meaning = document.getElementById("meaning").value
+
+if(word === "" || meaning === ""){
+alert("Nhập đầy đủ nha")
+return
+}
+
+cards.push({word, meaning})
+
+document.getElementById("word").value=""
+document.getElementById("meaning").value=""
+
+showCard()
+
+}
+
+function showCard(){
+
+if(cards.length === 0){
+document.getElementById("flashcard").innerText="Chưa có thẻ"
+return
+}
+
+flipped=false
+document.getElementById("flashcard").innerText = cards[current].word
+
+}
+
+function flipCard(){
+
+if(cards.length === 0) return
+
+flipped = !flipped
+
+document.getElementById("flashcard").innerText =
+flipped ? cards[current].meaning : cards[current].word
+
+}
+
+function nextCard(){
+
+if(cards.length === 0) return
+
+current++
+
+if(current >= cards.length) current=0
+
+showCard()
+
+}
+
+function prevCard(){
+
+if(cards.length === 0) return
+
+current--
+
+if(current < 0) current = cards.length-1
+
+showCard()
+
+}
+
+/* tạo hoa lá rơi */
+
+const symbols = ["🌸","🍃","🌺","🌼","🍀"]
+
+function createLeaf(){
+
+const leaf = document.createElement("div")
+
+leaf.classList.add("leaf")
+
+leaf.innerText = symbols[Math.floor(Math.random()*symbols.length)]
+
+leaf.style.left = Math.random()*100+"vw"
+
+leaf.style.animationDuration = 5 + Math.random()*5 + "s"
+
+document.body.appendChild(leaf)
+
+setTimeout(()=>{leaf.remove()},10000)
+
+}
+
+setInterval(createLeaf,600)
+
+</script>
+
+</body>
+</html>
